@@ -6,5 +6,3 @@ docker rm projectwp_wpcli_1
 docker network rm projectwp_front
 docker network rm projectwp_back
 rm -Rf ../../volumes/mariadb/data/*
-cp docker-compose-sample.yml docker-compose.yml
-#docker-compose up

@@ -1,5 +1,3 @@
 .DS_Store
 docker-compose.yml
 src/*
-!src/themes
-!src/plugins
