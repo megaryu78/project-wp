@@ -10,3 +10,4 @@ docker rm ${PROJECT}_wpcli_1
 docker network rm ${PROJECT}_front
 docker network rm ${PROJECT}_back
 rm -Rf ./data/*
+rm -Rf ./src/wordpress/*
