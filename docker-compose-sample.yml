@@ -40,6 +40,7 @@ services: # configuring each container
             WORDPRESS_TABLE_PREFIX: prefix_
         volumes:
             - ./src/wordpress:/var/www/html
+            - ./src/themes:/var/www/html/wp-content/themes
             - ./src/plugins:/var/www/html/wp-content/plugins
             - ./src/uploads:/var/www/html/wp-content/uploads
         networks:
