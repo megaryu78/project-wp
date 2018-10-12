@@ -1,0 +1,56 @@
+# docker-compose.yaml
+version: '2.1' # version of docker-compose to use
+
+networks:
+    front:
+      driver: bridge
+    back:
+      driver: bridge
+services: # configuring each container
+    mariadb:
+        image: mariadb:10.3.10-bionic
+        #restart: always
+        restart: "no"
+        ports:
+            - 3306:3306
+        volumes:
+            - ../volumes/mariadb/data:/var/lib/mysql
+            - ./initdb:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpass_changeme
+            MYSQL_USER: dbuser_changeme
+            MYSQL_PASSWORD: dbpass_changeme
+        networks:
+            - back
+
+    wp: # name of our wordpress container
+        image: wordpress:4.9.8-php7.1
+        depends_on:
+            - mariadb
+        #build: ./wp/
+        restart: "no"
+        ports:
+            - 8000:80 # setting our ports for networking
+        environment:
+            WORDPRESS_DB_HOST: mariadb:3306
+            WORDPRESS_DB_NAME: dbname_changeme
+            WORDPRESS_DB_USER: dbuser_changeme
+            WORDPRESS_DB_PASSWORD: dbpass_changeme
+            WORDPRESS_TABLE_PREFIX: prefix_
+        volumes:
+            - ./src:/var/www/html
+        networks:
+            - front
+            - back
+    wpcli:
+        image: wordpress:cli
+        depends_on:
+            - mariadb
+            - wp
+        volumes_from:
+            - wp
+        networks:
+            - front
+            - back
+        entrypoint: wp
+        command: "--info"
