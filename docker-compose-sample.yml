@@ -38,6 +38,7 @@ services: # configuring each container
             WORDPRESS_DB_USER: dbuser
             WORDPRESS_DB_PASSWORD: dbpass
             WORDPRESS_TABLE_PREFIX: prefix_
+            WORDPRESS_DEBUG: 1
         volumes:
             - ./src/wordpress:/var/www/html
             - ./src/themes:/var/www/html/wp-content/themes
@@ -58,3 +59,7 @@ services: # configuring each container
             - back
         entrypoint: wp
         command: "--info"
+        command: >
+            /bin/sh -c '
+            sleep 180;
+            wp core install --url=localhost:8000 --title="Local Site" --admin_user=nimda --admin_password=secret --admin_email=admin@cronologic.com'
