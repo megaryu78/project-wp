@@ -11,20 +11,20 @@ do
     read -s rootpass2
 done
 
-sed "s/rootpass/$rootpass1/g" ./docker-compose-sample.yml > ./docker-compose.yml
+sed "s/rootpass/$rootpass1/g" ./docker-compose-windows.yml > ./docker-compose.yml
 sed "s/rootpass/$rootpass1/g" ./wp-install-sample.sh > ./wp-install.sh
 
 dbname="dbname"
 read -p "Enter db name: " dbname
 
-sed -i "" "s/dbname/$dbname/g" ./docker-compose.yml
-sed -i "" "s/dbname/$dbname/g" ./wp-install.sh
+sed -i "s/dbname/$dbname/g" ./docker-compose.yml
+sed -i "s/dbname/$dbname/g" ./wp-install.sh
 
 dbuser="dbuser"
 read -p "Enter db user: " dbuser
 
-sed -i "" "s/dbuser/$dbuser/g" ./docker-compose.yml
-sed -i "" "s/dbuser/$dbuser/g" ./wp-install.sh
+sed -i "s/dbuser/$dbuser/g" ./docker-compose.yml
+sed -i "s/dbuser/$dbuser/g" ./wp-install.sh
 
 dbpass="dbpass"
 dbpass1="$dbpass"
@@ -38,13 +38,13 @@ do
     read -s dbpass2
 done
 
-sed -i "" "s/dbpass/$dbpass1/g" ./docker-compose.yml
+sed -i "s/dbpass/$dbpass1/g" ./docker-compose.yml
 
 prefix="prefix"
 read -p "Enter table prefix [$prefix]: " prefix
 
-sed -i "" "s/prefix/$prefix/g" ./docker-compose.yml
-sed -i "" "s/prefix/$prefix/g" ./wp-install.sh
+sed -i "s/prefix/$prefix/g" ./docker-compose.yml
+sed -i "s/prefix/$prefix/g" ./wp-install.sh
 
 # Damos permisos de ejecucion
 chmod a+x ./wp-install.sh
