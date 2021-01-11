@@ -8,7 +8,7 @@ networks:
       driver: bridge
 services: # configuring each container
     mariadb:
-        image: mariadb:10.3.10-bionic
+        image: mariadb:10.5.8-focal
         #restart: always
         restart: "no"
         ports:
@@ -27,7 +27,7 @@ services: # configuring each container
     wp: # name of our wordpress container
         depends_on:
             - mariadb
-        image: wordpress:5.0.3-php7.1
+        image: wordpress:5.6.0-fpm-alpine
         #build: ./wp/
         restart: "no"
         ports:
@@ -51,7 +51,7 @@ services: # configuring each container
         depends_on:
             - mariadb
             - wp
-        image: wordpress:cli
+        image: wordpress:cli-2.4.0
         volumes_from:
             - wp
         networks:
