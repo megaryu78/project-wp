@@ -30,8 +30,6 @@ services: # configuring each container
         image: wordpress:5.6.0-fpm-alpine
         #build: ./wp/
         restart: "no"
-        ports:
-            - 8000:80 # setting our ports for networking
         environment:
             - WORDPRESS_DB_HOST=mariadb:3306
             - WORDPRESS_DB_NAME=dbname
@@ -47,6 +45,19 @@ services: # configuring each container
         networks:
             - front
             - back
+    nginx:
+        depends_on:
+            - wp
+        image: nginx:1.19.6-alpine
+        restart: "no"
+        ports:
+            - 8000:80
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+        volumes_from:
+            - wp
+        networks:
+            - front
     wpcli:
         depends_on:
             - mariadb

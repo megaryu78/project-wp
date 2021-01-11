@@ -23,15 +23,12 @@ services: # configuring each container
             - MYSQL_PASSWORD=dbpass
         networks:
             - back
-
     wp: # name of our wordpress container
         depends_on:
             - mariadb
         image: wordpress:5.6.0-fpm-alpine
         #build: ./wp/
         restart: "no"
-        ports:
-            - 8000:80 # setting our ports for networking
         environment:
             - WORDPRESS_DB_HOST=mariadb:3306
             - WORDPRESS_DB_NAME=dbname
@@ -47,6 +44,19 @@ services: # configuring each container
         networks:
             - front
             - back
+    nginx:
+        depends_on:
+            - wp
+        image: nginx:1.19.6-alpine
+        restart: "no"
+        ports:
+            - 8000:80
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+        volumes_from:
+            - wp
+        networks:
+            - front
     wpcli:
         depends_on:
             - mariadb
@@ -59,7 +69,3 @@ services: # configuring each container
             - back
         entrypoint: wp
         command: "--info"
-        #command: >
-        # /bin/sh -c '
-        # sleep 180;
-        # wp core install --url=localhost:8000 --title="Local Site" --admin_user=nimda --admin_password=secret --admin_email=admin@cronologic.com'
